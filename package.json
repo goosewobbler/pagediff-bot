@@ -1,0 +1,16 @@
+{
+  "name": "pagediff-notifier-bot",
+  "version": "0.1.0",
+  "description": "Telegram bot for polling a URL and notifying of diffs",
+  "homepage": "http://github.com/smaister/pagediff-notifier-bot",
+  "main": "index.js",
+  "dependencies": {
+    "telegram-api": "^0.7.5"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-jasmine": "^2.3.0"
+  },
+  "repository": "http://github.com/smaister/pagediff-notifier-bot",
+  "license": "MIT"
+}
