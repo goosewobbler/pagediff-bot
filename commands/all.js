@@ -1,4 +1,4 @@
-import './start';
+require('./start');
 // import mdn from './mdn';
 // import feeds from './feeds';
 // import github from './github';

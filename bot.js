@@ -1,9 +1,9 @@
-import Bot from 'telegram-api/build';
+const Bot = require('telegram-api/build').default;
 
 let bot = new Bot({
     token: process.env.JAVASCRIPTBOT_TOKEN
 });
 
-export default bot;
+module.exports = bot;
 
 bot.start();

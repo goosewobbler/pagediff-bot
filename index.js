@@ -12,4 +12,4 @@
 //persistence - write config
 //persistence - read config
 
-import './commands/all';
+require('./commands/all');
