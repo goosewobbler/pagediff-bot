@@ -9,7 +9,7 @@ bot.onText(/pollStart (.*) (.*) (.*)/, (message, args) => {
         `Started polling ${url} for matches of ${regexStr} every ${interval} seconds.  You can stop it with "poll stop ${url}"`
     );
 
-    console.log('CHAT', message.chat.first_name);
+    //console.log('CHAT', message.chat.first_name);
 
     polling.start(url, regexStr, interval)
         .then(() =>
