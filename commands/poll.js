@@ -1,27 +1,29 @@
-const Message = require('telegram-api/types/Message'),
-      polling = require('../lib/polling'),
-      bot = require('../bot');
+const bot = require('../bot'),
+      polling = require('../lib/polling');
 
-bot.command('pollStart <url> <regexStr> <interval>', (message) => {
-    const { url, regexStr, interval } = message.args;
-    let status = new Message().text(`Started polling ${url} for matches of ${regexStr} every ${interval} seconds.  You can stop it with "poll stop ${url}"`);
+bot.onText(/pollStart (.*) (.*) (.*)/, (message, args) => {
+    let [, url, regexStr, interval] = args;
 
-    console.log('CHAT', message.chat.getChatMember());
+    bot.sendMessage(
+        message.chat.id,
+        `Started polling ${url} for matches of ${regexStr} every ${interval} seconds.  You can stop it with "poll stop ${url}"`
+    );
+
+    console.log('CHAT', message.chat.first_name);
 
     polling.start(url, regexStr, interval)
-        .then(() => {
-            let resultMessage = new Message().text(`The page at ${url} matches your regex "${regexStr}"`);
-
-            bot.send(resultMessage.to(message.chat.id));
-        });
-
-    bot.send(status.to(message.chat.id));
+        .then(() =>
+            bot.sendMessage(
+                message.chat.id,
+                `@${message.chat.first_name} The page at ${url} matches your regex "${regexStr}"`,
+                { reply_to_message_id: message.id }
+            )
+        );
 });
 
-bot.command('pollStop <url>', (message) => {
-    const { url } = message.args;
-    let status = new Message().text(`Polling for ${url} stopped.`);
-    bot.send(status.to(message.chat.id));
+bot.onText(/pollStop (.*)/, (message, args) => {
+    let [, url] = args;
 
     polling.stop(url);
+    bot.sendMessage(message.chat.id, `Polling for ${url} stopped.`);
 });

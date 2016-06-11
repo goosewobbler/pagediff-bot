@@ -1,7 +1,5 @@
-const Message = require('telegram-api/types/Message'),
-      bot = require('../bot'),
-      start = new Message().text('YO!  I am a bot.');
+const bot = require('../bot');
 
-bot.command('start', (message) => {
-    bot.send(start.to(message.chat.id));
+bot.onText(/start/, (message) => {
+    bot.sendMessage(message.chat.id, 'YO!  I am a bot.');
 });

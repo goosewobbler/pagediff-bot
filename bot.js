@@ -1,9 +1,8 @@
-const Bot = require('telegram-api/build').default;
+const TelegramBot = require('node-telegram-bot-api');
 
-let bot = new Bot({
-    token: process.env.JAVASCRIPTBOT_TOKEN
-});
+let bot = new TelegramBot(
+    process.env.JAVASCRIPTBOT_TOKEN,
+    { polling: true }
+);
 
 module.exports = bot;
-
-bot.start();
