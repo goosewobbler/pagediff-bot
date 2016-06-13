@@ -3,5 +3,8 @@ const gulp = require('gulp'),
 
 gulp.task('test', () =>
     gulp.src('test/**/*.spec.js')
-        .pipe(jasmine())
+        .pipe(jasmine({
+            includeStackTrace: true,
+            verbose: true
+        }))
 );
