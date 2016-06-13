@@ -1,5 +1,5 @@
 const bot = require('../bot'),
-      matchPage = require('../lib/match');
+      matchPage = require('../lib/page-analyser');
 
 bot.onText(/match (.*) (.*)/, (message, args) => {
     let [, url, regexStr] = args;
