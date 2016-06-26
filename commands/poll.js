@@ -24,6 +24,11 @@ bot.onText(/pollStart (.*) (.*) (.*)/, (message, args) => {
 bot.onText(/pollStop (.*)/, (message, args) => {
     let [, url] = args;
 
-    polling.stop(url);
-    bot.sendMessage(message.chat.id, `Polling for ${url} stopped.`);
+    polling.stop(url)
+        .then(() =>
+            bot.sendMessage(
+                message.chat.id,
+                `Polling for ${url} stopped.`
+            )
+        );
 });
