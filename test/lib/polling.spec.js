@@ -29,9 +29,9 @@ describe('polling', () => {
 
         describe('when the match result is initially false', () => {
 
-            beforeEach(() => {
-                mockMatchResult = false;
-            });
+            beforeEach(() =>
+                mockMatchResult = false
+            );
 
             it('should call the pageAnalyser every second', (done) => {
                 setTimeout(() =>   //initial call
@@ -51,9 +51,9 @@ describe('polling', () => {
             describe('and the match result is subsequently true', () => {
 
                 beforeEach(() =>
-                    setTimeout(() => {
-                        mockMatchResult = true;
-                    }, 500)
+                    setTimeout(() =>
+                        mockMatchResult = true
+                    , 500)
                 );
 
                 it('should resolve with true', (done) => {
@@ -66,13 +66,13 @@ describe('polling', () => {
                 });
 
                 it('should stop polling', (done) => {
-                    setTimeout(() => {  //second call to match
-                        expect(pageAnalyser.match.calls.count()).toEqual(2);
-                    }, 1050);
-                    setTimeout(() => {  //not called again
-                        expect(pageAnalyser.match.calls.count()).toEqual(2);
-                        done();
-                    }, 2050);
+                    setTimeout(() =>   //second call to match
+                        expect(pageAnalyser.match.calls.count()).toEqual(2)
+                    , 1050);
+                    setTimeout(() =>   //not called again
+                        expect(pageAnalyser.match.calls.count()).toEqual(2)
+                    , 2050);
+                    setTimeout(done, 2100);
 
                     polling.start(mockUrl, mockRegexStr, mockInterval);
                 });
@@ -88,25 +88,25 @@ describe('polling', () => {
         });
 
         it('should immediately stop polling', (done) => {
-            setTimeout(() => {  //only called once
-                expect(pageAnalyser.match.calls.count()).toEqual(1);
-            }, 50);
-            setTimeout(() => {  //not called again
-                expect(pageAnalyser.match.calls.count()).toEqual(1);
-                done();
-            }, 1050);
+            setTimeout(() =>   //only called once
+                expect(pageAnalyser.match.calls.count()).toEqual(1)
+            , 50);
+            setTimeout(() =>   //not called again
+                expect(pageAnalyser.match.calls.count()).toEqual(1)
+            , 1050);
+            setTimeout(done, 1100);
 
             polling.stop(mockUrl);
         });
 
         it('should only stop polling for the specified url', (done) => {
-            setTimeout(() => {  //first call
-                expect(pageAnalyser.match.calls.count()).toEqual(1);
-            }, 50);
-            setTimeout(() => {  //still polling
-                expect(pageAnalyser.match.calls.count()).toEqual(2);
-                done();
-            }, 1050);
+            setTimeout(() =>   //first call
+                expect(pageAnalyser.match.calls.count()).toEqual(1)
+            , 50);
+            setTimeout(() =>   //still polling
+                expect(pageAnalyser.match.calls.count()).toEqual(2)
+            , 1050);
+            setTimeout(done, 1100);
 
             polling.stop('http://some/other/url');
         });
