@@ -12,6 +12,7 @@ describe('polling', () => {
         spyOn(pageAnalyser, 'match').and.callFake(() =>
             Promise.resolve(mockMatchResult)
         );
+        spyOn(console, 'log');
     });
 
     afterEach((done) => {
@@ -72,6 +73,48 @@ describe('polling', () => {
                     setTimeout(() =>   //not called again
                         expect(pageAnalyser.match.calls.count()).toEqual(2)
                     , 2050);
+                    setTimeout(done, 2100);
+
+                    polling.start(mockUrl, mockRegexStr, mockInterval);
+                });
+            });
+
+            describe('and the matching results in an error', () => {
+                let mockError;
+
+                beforeEach(() =>
+                    pageAnalyser.match.and.callFake(() =>
+                        new Promise(() => {
+                            mockError = new Error('b0rk');
+                            throw mockError;
+                        })
+                    )
+                );
+
+                it('should catch the error', (done) => {
+                    polling.start(mockUrl, mockRegexStr, mockInterval)
+                        .then(done)
+                        .catch(done.fail);
+                });
+
+
+                it('should log the error', (done) => {
+                    polling.start(mockUrl, mockRegexStr, mockInterval)
+                        .then(() => {
+                            expect(console.log).toHaveBeenCalledWith('Starting polling...');
+                            expect(console.log).toHaveBeenCalledWith(mockError);
+                            expect(console.log).toHaveBeenCalledWith('Stopping polling...');
+                        })
+                        .then(done);
+                });
+
+                it('should stop polling', (done) => {
+                    setTimeout(() =>   //not called after first time
+                            expect(pageAnalyser.match.calls.count()).toEqual(1)
+                        , 1050);
+                    setTimeout(() =>   //not called after first time
+                            expect(pageAnalyser.match.calls.count()).toEqual(1)
+                        , 2050);
                     setTimeout(done, 2100);
 
                     polling.start(mockUrl, mockRegexStr, mockInterval);
